@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3 uid="uid://ltswc5gl2scf"]
+
+[ext_resource type="Script" path="res://codes/mob.gd" id="1_54cdl"]
+[ext_resource type="Texture2D" uid="uid://de5vqcvndajxa" path="res://art/ennemi.png" id="4_p4o0g"]
+[ext_resource type="Texture2D" uid="uid://blkhjvitu7cmb" path="res://art/LifeBarMiniUnder.png" id="8_1im3k"]
+[ext_resource type="Texture2D" uid="uid://cn5lv7jpbx54o" path="res://art/LifeBarMiniProgress.png" id="9_s485p"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1biai"]
+radius = 29.0
+height = 80.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ejqxi"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_p4o0g")
+}],
+"loop": true,
+"name": &"fantome",
+"speed": 5.0
+}]
+
+[node name="Mob" type="CharacterBody2D"]
+texture_filter = 1
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_54cdl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_1biai")
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+
+[node name="barre_de_vie_mobs" type="TextureProgressBar" parent="."]
+texture_filter = 1
+offset_left = -48.0
+offset_top = -88.0
+offset_right = 52.0
+offset_bottom = -49.0
+value = 100.0
+nine_patch_stretch = true
+texture_under = ExtResource("8_1im3k")
+texture_progress = ExtResource("9_s485p")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+position = Vector2(7.62939e-06, -8)
+scale = Vector2(1.05833, 0.975545)
+sprite_frames = SubResource("SpriteFrames_ejqxi")
+animation = &"fantome"
+
+[connection signal="screen_exited" from="VisibleOnScreenEnabler2D" to="." method="_on_visible_on_screen_enabler_2d_screen_exited"]

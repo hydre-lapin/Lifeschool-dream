@@ -1,0 +1,605 @@
+[gd_scene load_steps=8 format=3 uid="uid://bvf42p630hv1c"]
+
+[ext_resource type="Script" path="res://codes/hud.gd" id="1_57xdo"]
+[ext_resource type="FontFile" uid="uid://bip45062xm404" path="res://fonts/Pixeled.ttf" id="1_axrb8"]
+[ext_resource type="Texture2D" uid="uid://blkhjvitu7cmb" path="res://art/LifeBarMiniUnder.png" id="3_saks0"]
+[ext_resource type="Texture2D" uid="uid://cn5lv7jpbx54o" path="res://art/LifeBarMiniProgress.png" id="4_ydqyi"]
+[ext_resource type="Texture2D" uid="uid://grxf5hbraapf" path="res://art/fond_menu.png" id="5_kls8u"]
+[ext_resource type="Texture2D" uid="uid://v5myxkdq0p0h" path="res://art/png-clipart-pixel-art-sword-minecraft-sword-angle-text.png" id="6_7wubn"]
+[ext_resource type="Texture2D" uid="uid://bwxm8pepo6h21" path="res://art/player.png" id="7_i5qe6"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_57xdo")
+
+[node name="fond_menu" type="Sprite2D" parent="."]
+position = Vector2(968, 544)
+texture = ExtResource("5_kls8u")
+
+[node name="start_button" type="Button" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -112.0
+offset_top = -120.0
+offset_right = 112.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 40
+text = "START"
+
+[node name="titre_timer" type="Timer" parent="."]
+
+[node name="infos_touches" type="Label" parent="."]
+texture_filter = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 288.0
+offset_top = -456.0
+offset_right = 632.0
+offset_bottom = -116.0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("1_axrb8")
+text = "Touches Principales :
+
+avancer : Z ou ⭡
+reculer : S ou ⭣
+aller à gauhe : Q ou ⭠
+aller à droite : D ou ⭢
+donner un coup : ➤🖰"
+vertical_alignment = 1
+
+[node name="infos_affichages" type="Label" parent="."]
+texture_filter = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -592.0
+offset_top = -384.0
+offset_right = -276.0
+offset_bottom = -128.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("1_axrb8")
+text = "Menus principaux :
+
+menu principal : ESC ou ↹
+Inventaire : T ou I
+Intéragir : E"
+vertical_alignment = 1
+
+[node name="barre_de_vie_player" type="TextureProgressBar" parent="."]
+visible = false
+texture_filter = 1
+offset_left = 40.0
+offset_top = 16.0
+offset_right = 456.0
+offset_bottom = 96.0
+value = 100.0
+nine_patch_stretch = true
+texture_under = ExtResource("3_saks0")
+texture_progress = ExtResource("4_ydqyi")
+
+[node name="boss_vie" type="Panel" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="barre_de_vie_boss" type="TextureProgressBar" parent="boss_vie"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 952.0
+offset_top = 8.0
+offset_right = 1900.0
+offset_bottom = 96.0
+value = 100.0
+nine_patch_stretch = true
+texture_under = ExtResource("3_saks0")
+texture_progress = ExtResource("4_ydqyi")
+
+[node name="nom_du_boss" type="Label" parent="boss_vie"]
+layout_mode = 0
+offset_left = 952.0
+offset_top = 72.0
+offset_right = 1904.0
+offset_bottom = 184.0
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 40
+text = "Nom_du_boss"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="marchand" type="Panel" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="FondMenu" type="Sprite2D" parent="marchand"]
+position = Vector2(960, 544)
+texture = ExtResource("5_kls8u")
+
+[node name="nom_marchand" type="Label" parent="marchand"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 716.0
+offset_top = -16.0
+offset_right = 1132.0
+offset_bottom = 188.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 35
+text = "MARCHAND"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="achat_button1" type="Button" parent="marchand"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 1388.0
+offset_top = 256.0
+offset_right = 1612.0
+offset_bottom = 376.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 40
+text = "BUY"
+
+[node name="achat_button3" type="Button" parent="marchand"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 1388.0
+offset_top = 744.0
+offset_right = 1612.0
+offset_bottom = 864.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 40
+text = "BUY"
+
+[node name="achat_button2" type="Button" parent="marchand"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 1388.0
+offset_top = 496.0
+offset_right = 1612.0
+offset_bottom = 616.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 40
+text = "BUY"
+
+[node name="achat1" type="Label" parent="marchand"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -36.0
+offset_top = 240.0
+offset_right = 1476.0
+offset_bottom = 439.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 35
+text = "qualite_de_l_arme (et nom)
+DEGATS: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="achat2" type="Label" parent="marchand"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -36.0
+offset_top = 480.0
+offset_right = 1476.0
+offset_bottom = 679.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 35
+text = "qualite_de_l_arme (et nom)
+DEGATS: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="achat3" type="Label" parent="marchand"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -44.0
+offset_top = 735.0
+offset_right = 1468.0
+offset_bottom = 934.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 35
+text = "qualite_de_l_arme (et nom)
+DEGATS: "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="quit_button" type="Button" parent="marchand"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 828.0
+offset_top = 920.0
+offset_right = 1052.0
+offset_bottom = 1040.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 40
+text = "QUIT"
+
+[node name="ressources" type="Label" parent="marchand"]
+layout_mode = 0
+offset_left = 1056.0
+offset_top = 128.0
+offset_right = 1512.0
+offset_bottom = 256.0
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 35
+text = "RESSOURCES : "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="inventaire" type="Panel" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="FondMenu" type="Sprite2D" parent="inventaire"]
+position = Vector2(968, 536)
+texture = ExtResource("5_kls8u")
+
+[node name="Player" type="Sprite2D" parent="inventaire"]
+position = Vector2(451, 372)
+scale = Vector2(0.45904, 0.429687)
+texture = ExtResource("7_i5qe6")
+
+[node name="nom_perssonage" type="Label" parent="inventaire"]
+layout_mode = 1
+offset_left = 192.0
+offset_top = -16.0
+offset_right = 1728.0
+offset_bottom = 183.0
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 35
+text = "PERSONNAGE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ressources" type="Label" parent="inventaire"]
+layout_mode = 0
+offset_left = 544.0
+offset_top = 584.0
+offset_right = 1000.0
+offset_bottom = 712.0
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 35
+text = "RESSOURCES : "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="degats" type="Label" parent="inventaire"]
+layout_mode = 0
+offset_left = 568.0
+offset_top = 360.0
+offset_right = 952.0
+offset_bottom = 488.0
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 35
+text = "DEGATS :"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="nom_arme" type="Label" parent="inventaire"]
+layout_mode = 0
+offset_left = 1160.0
+offset_top = 664.0
+offset_right = 1608.0
+offset_bottom = 792.0
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 35
+text = "Nom_de_l_arme"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Png-clipart-pixel-art-sword-minecraft-sword-angle-text" type="Sprite2D" parent="inventaire"]
+position = Vector2(1416, 416)
+scale = Vector2(0.494444, 0.736842)
+texture = ExtResource("6_7wubn")
+
+[node name="pause_menu" type="Panel" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect" type="ColorRect" parent="pause_menu"]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.0705882, 0.243137, 0.313726, 1)
+
+[node name="mute_music" type="Button" parent="pause_menu"]
+layout_mode = 0
+offset_left = 1648.0
+offset_top = 544.0
+offset_right = 1768.0
+offset_bottom = 624.0
+theme_override_font_sizes/font_size = 50
+text = "	🔇"
+
+[node name="menu" type="Label" parent="pause_menu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 856.0
+offset_right = 1024.0
+offset_bottom = 112.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 40
+text = "Menu"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="music_volum" type="HSlider" parent="pause_menu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 300.0
+offset_top = 460.0
+offset_right = 1580.0
+offset_bottom = 660.0
+grow_horizontal = 2
+grow_vertical = 2
+max_value = 1.0
+step = 0.001
+value = 0.5
+
+[node name="mute_master" type="Button" parent="pause_menu"]
+layout_mode = 0
+offset_left = 1648.0
+offset_top = 320.0
+offset_right = 1768.0
+offset_bottom = 400.0
+theme_override_font_sizes/font_size = 50
+text = "	🔇"
+
+[node name="quit_button" type="Button" parent="pause_menu"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 828.0
+offset_top = 920.0
+offset_right = 1052.0
+offset_bottom = 1040.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 40
+text = "QUIT"
+
+[node name="Music" type="Label" parent="pause_menu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 520.0
+offset_right = 300.0
+offset_bottom = 632.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 40
+text = "MUSIC"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Game" type="Label" parent="pause_menu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 688.0
+offset_right = 300.0
+offset_bottom = 915.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 40
+text = "Sound
+effects"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Master" type="Label" parent="pause_menu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 296.0
+offset_right = 300.0
+offset_bottom = 408.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 40
+text = "Master"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="mute_game" type="Button" parent="pause_menu"]
+layout_mode = 0
+offset_left = 1648.0
+offset_top = 768.0
+offset_right = 1768.0
+offset_bottom = 848.0
+theme_override_font_sizes/font_size = 50
+text = "	🔇"
+
+[node name="master_volum" type="HSlider" parent="pause_menu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 300.0
+offset_top = 236.0
+offset_right = 1580.0
+offset_bottom = 436.0
+grow_horizontal = 2
+grow_vertical = 2
+max_value = 1.0
+step = 0.001
+value = 0.5
+
+[node name="game_volum" type="HSlider" parent="pause_menu"]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 688.0
+offset_right = 1600.0
+offset_bottom = 920.0
+max_value = 1.0
+step = 0.001
+value = 0.5
+
+[node name="fullscreen" type="CheckButton" parent="pause_menu"]
+layout_mode = 0
+offset_left = 1640.0
+offset_top = 16.0
+offset_right = 1908.0
+offset_bottom = 132.0
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 25
+text = "fullscreen"
+alignment = 1
+
+[node name="resume_button" type="Button" parent="pause_menu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 812.0
+offset_top = 148.0
+offset_right = 1068.0
+offset_bottom = 268.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 40
+text = "RESUME"
+
+[node name="fin_menu" type="Panel" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="fond_menu" type="Sprite2D" parent="fin_menu"]
+position = Vector2(968, 544)
+texture = ExtResource("5_kls8u")
+
+[node name="infos_touches" type="Label" parent="fin_menu"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 280.0
+offset_top = 104.0
+offset_right = 1664.0
+offset_bottom = 592.0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("1_axrb8")
+text = "Félicitations ! Vous avez réussi à terminer le jeu.
+Votre courage et votre persévérance ont porté leurs fruits.
+Merci d'avoir joué et d'avoir partagé cette aventure avec nous.
+Nous espérons vous revoir bientôt dans de nouvelles aventures !"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="start_button" type="Button" parent="fin_menu"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 828.0
+offset_top = 920.0
+offset_right = 1052.0
+offset_bottom = 1040.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 40
+text = "RESTART"
+
+[node name="titre" type="Label" parent="."]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -56.0
+offset_bottom = 56.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("1_axrb8")
+theme_override_font_sizes/font_size = 40
+text = "LIFESCHOOL DREAM"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="start_button" to="." method="_on_start_button_pressed"]
+[connection signal="timeout" from="titre_timer" to="." method="_on_titre_timer_timeout"]
+[connection signal="pressed" from="marchand/achat_button1" to="." method="_on_achat_button_1_pressed"]
+[connection signal="pressed" from="marchand/achat_button3" to="." method="_on_achat_button_3_pressed"]
+[connection signal="pressed" from="marchand/achat_button2" to="." method="_on_achat_button_2_pressed"]
+[connection signal="pressed" from="marchand/quit_button" to="." method="_on_quit_button_marchand_pressed"]
+[connection signal="pressed" from="pause_menu/mute_music" to="." method="_on_mute_music_pressed"]
+[connection signal="value_changed" from="pause_menu/music_volum" to="." method="_on_music_volum_value_changed"]
+[connection signal="pressed" from="pause_menu/mute_master" to="." method="_on_mute_master_pressed"]
+[connection signal="pressed" from="pause_menu/quit_button" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="pause_menu/mute_game" to="." method="_on_mute_game_pressed"]
+[connection signal="value_changed" from="pause_menu/master_volum" to="." method="_on_master_volum_value_changed"]
+[connection signal="value_changed" from="pause_menu/game_volum" to="." method="_on_game_volum_value_changed"]
+[connection signal="pressed" from="pause_menu/fullscreen" to="." method="_on_check_button_pressed"]
+[connection signal="pressed" from="pause_menu/resume_button" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="fin_menu/start_button" to="." method="_on_start_button_pressed"]

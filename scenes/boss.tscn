@@ -1,0 +1,51 @@
+[gd_scene load_steps=7 format=3 uid="uid://ct0oeq6vhadhl"]
+
+[ext_resource type="Script" path="res://codes/boss.gd" id="1_5g01o"]
+[ext_resource type="Texture2D" uid="uid://bba4j3g6wtkcb" path="res://art/boss.png" id="4_5njkc"]
+[ext_resource type="Texture2D" uid="uid://drcygp2l2de7o" path="res://art/warning_boss_wall.png" id="8_sq1tf"]
+[ext_resource type="Texture2D" uid="uid://ddiier41nt86r" path="res://art/warning_boss_zone.png" id="9_bfdk3"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g2kto"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_5njkc")
+}],
+"loop": true,
+"name": &"fantome",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5gha0"]
+radius = 32.0
+height = 96.0
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = ExtResource("1_5g01o")
+
+[node name="attaque" type="Panel" parent="."]
+offset_left = -24.0
+offset_top = -15.0
+offset_right = 28.0
+offset_bottom = 25.0
+
+[node name="WarningBossWall" type="Sprite2D" parent="attaque"]
+position = Vector2(24, -57)
+scale = Vector2(0.0630668, 0.0466412)
+texture = ExtResource("8_sq1tf")
+
+[node name="WarningBossZone" type="Sprite2D" parent="attaque"]
+position = Vector2(24, -57)
+scale = Vector2(0.0620843, 0.0486319)
+texture = ExtResource("9_bfdk3")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 1
+position = Vector2(-8.00001, -3.5)
+scale = Vector2(2.11666, 2.06)
+sprite_frames = SubResource("SpriteFrames_g2kto")
+animation = &"fantome"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+texture_filter = 1
+shape = SubResource("CapsuleShape2D_5gha0")

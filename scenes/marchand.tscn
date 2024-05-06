@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://bvrj3lo8jxoai"]
+
+[ext_resource type="Script" path="res://codes/CollisionShape2D.gd" id="1_yey4y"]
+[ext_resource type="Texture2D" uid="uid://i6pspt75584o" path="res://art/tablemarchand.png" id="2_80f3s"]
+[ext_resource type="Texture2D" uid="uid://dgpcfkvy2jm3j" path="res://art/marchand.png" id="3_kv3i4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4urov"]
+size = Vector2(48, 40)
+
+[node name="marchand" type="CharacterBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_4urov")
+script = ExtResource("1_yey4y")
+
+[node name="Tablemarchand" type="Sprite2D" parent="."]
+position = Vector2(-8, -8)
+scale = Vector2(0.30778, 0.299499)
+texture = ExtResource("2_80f3s")
+
+[node name="Marchand" type="Sprite2D" parent="."]
+position = Vector2(0, -64)
+scale = Vector2(0.443503, 0.398876)
+texture = ExtResource("3_kv3i4")

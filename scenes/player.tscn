@@ -1,0 +1,269 @@
+[gd_scene load_steps=16 format=3 uid="uid://b5dpd1o3cgy4j"]
+
+[ext_resource type="Texture2D" uid="uid://v5myxkdq0p0h" path="res://art/png-clipart-pixel-art-sword-minecraft-sword-angle-text.png" id="1_7he1q"]
+[ext_resource type="Texture2D" uid="uid://didjors8uypb1" path="res://art/playerup.png" id="2_xiemw"]
+[ext_resource type="Texture2D" uid="uid://bwxm8pepo6h21" path="res://art/player.png" id="4_8j88l"]
+[ext_resource type="Texture2D" uid="uid://blkhjvitu7cmb" path="res://art/LifeBarMiniUnder.png" id="6_cw6vm"]
+[ext_resource type="Texture2D" uid="uid://dssmvgqic4p42" path="res://art/CooldownMiniProgress.png" id="7_hudbo"]
+[ext_resource type="AudioStream" uid="uid://bw5ji6hstqwxi" path="res://art/coup_d_epee.wav" id="8_tl1ew"]
+
+[sub_resource type="GDScript" id="GDScript_brfqc"]
+script/source = "extends CharacterBody2D
+
+
+signal hit
+const SPEED = 300.0
+var ATTACK_RANGE = 150
+var degats = 1
+var ressources = 0
+var nom_arme = \"epee classique\"
+var infos_armes = {
+\"epee inhabituelle\" : [1.25,225],
+\"epee rare\" : [1.5,300],
+\"epee epique\" : [1.75,350],
+\"epee legendaire\" : [2,500],
+\"epee absolu\" : [2.5,750]}
+
+@onready var hud = get_node(\"/root/main/HUD\")
+@onready var main = get_node(\"/root/main\")
+@onready var menu = get_node(\"/root/main/HUD/pause_menu\")
+@onready var inventaire = get_node(\"/root/main/HUD/inventaire\")
+@onready var marchand = get_node(\"/root/main/HUD/marchand\")
+@onready var fin = get_node(\"/root/main/HUD/fin_menu\")
+@onready var affichage_start = get_node(\"/root/main/HUD/titre\")
+# Get the gravity from the project settings to be synced with RigidBody nodes.
+var screen_size
+var life
+var life_total
+var cooldown_effect = false
+
+func _ready():
+	screen_size = get_viewport_rect().size
+	hide()
+	life = 10
+	life_total = life
+	add_to_group(\"player\")
+	get_node(\"/root/main/HUD\").degats_info_inventaire(degats,ressources,nom_arme)
+
+func _physics_process(delta):
+
+	# Get the input direction and handle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+	var direction_x = Input.get_axis(\"move_left\", \"move_right\")
+	if direction_x:
+		velocity.x = direction_x * SPEED
+		if velocity.x != 0:
+			$AnimatedSprite2D.animation = \"walk\"
+			$AnimatedSprite2D.flip_h = velocity.x <0
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+	var direction_y = Input.get_axis(\"move_up\", \"move_down\")
+	if direction_y:
+		velocity.y = direction_y * SPEED
+		if velocity.y != 0:
+			$AnimatedSprite2D.animation = \"up\"
+	else:
+		velocity.y = move_toward(velocity.y,0,SPEED)
+
+	move_and_slide()
+	
+	if Input.is_action_just_pressed(\"attack\") and !cooldown_effect and !menu.visible and !inventaire.visible and !marchand.visible and !fin.visible:
+	# Infligez des dégâts aux mobs
+		damage_mobs()
+		#bruit d'épée
+		$coup.play()
+		$cooldown_attack.start()
+		cooldown_effect = true
+		$cooldown_player.show()
+		
+	var commerce = get_tree().get_nodes_in_group(\"marchand\")
+	if Input.is_action_just_pressed(\"marchand\"):
+		if commerce.size() > 0:
+			var distance_to_marchand = position.distance_to(commerce[0].global_position)
+			if distance_to_marchand < ATTACK_RANGE:
+				get_node(\"/root/main/HUD\").affiche_commerce()
+
+
+func damage_mobs():
+	# Obtenez tous les mobs dans la scène
+	var mobs = get_tree().get_nodes_in_group(\"mobs\")
+	var boss = get_tree().get_nodes_in_group(\"boss\")
+	for mob in mobs:
+		# Vérifiez si le mob est à portée de l'attaque
+		var distance_to_mob = position.distance_to(mob.position)
+		if distance_to_mob < ATTACK_RANGE:
+			# Infligez des dégâts au mob
+			mob.take_damage(degats)
+	for b in boss:
+		# Vérifiez si le boss est à portée de l'attaque
+		var distance_to_boss = position.distance_to(b.position)
+		if distance_to_boss < ATTACK_RANGE:
+			# Infligez des dégâts au boss
+			b.take_damage(degats)
+
+func start(pos):
+	position = pos
+	$CollisionShape2D.disabled = false
+	show()
+
+
+func _on_hit():
+	if life != 0 and (!menu.visible or !inventaire.visible):
+		life -=1
+		hud.update_life(life,life_total)
+	if life == 0 and !affichage_start.visible:
+		main.game_over()
+
+
+func _on_area_2d_body_entered(body):
+	if body.is_in_group(\"spells\"):
+		if life > 0 :
+			emit_signal(\"hit\")
+
+
+func _on_cooldown_attack_timeout():
+	cooldown_effect = false
+	$cooldown_player.hide()
+
+func changer_arme(arme,prix,bouton):
+	if !bouton.visible:
+		bouton.show()
+		return
+	if int(prix) > ressources:
+		get_node(\"/root/main/HUD\").show_message(\"Vous ne pouvez pas acheter\")
+		return
+	nom_arme = arme
+	degats = float(infos_armes[arme][0])
+	ressources -= int(prix)
+	get_node(\"/root/main/HUD\").degats_info_inventaire(degats,ressources,nom_arme)
+	bouton.hide()
+"
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2p1sr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_xiemw")
+}],
+"loop": true,
+"name": &"up",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_8j88l")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qwfl6"]
+radius = 5.4
+height = 17.2
+
+[sub_resource type="Gradient" id="Gradient_y7avj"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2lj7h"]
+gradient = SubResource("Gradient_y7avj")
+width = 100
+height = 100
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_n13mo"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_36yxi"]
+gradient = SubResource("Gradient_n13mo")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.8, 0.1)
+
+[sub_resource type="Gradient" id="Gradient_acrkd"]
+offsets = PackedFloat32Array(0.994413, 1)
+colors = PackedColorArray(0, 0, 0, 1, 0.944134, 0.944134, 0.944134, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_aui8d"]
+gradient = SubResource("Gradient_acrkd")
+width = 5
+height = 5
+fill = 2
+fill_from = Vector2(0.5, 0.5)
+
+[node name="player" type="CharacterBody2D"]
+texture_filter = 1
+scale = Vector2(5, 5)
+collision_mask = 2
+script = SubResource("GDScript_brfqc")
+
+[node name="Png-clipart-pixel-art-sword-minecraft-sword-angle-text" type="Sprite2D" parent="."]
+position = Vector2(5.2, -0.2)
+scale = Vector2(0.0113889, 0.0141447)
+texture = ExtResource("1_7he1q")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0.200001, -1.24999)
+scale = Vector2(0.035911, 0.0319336)
+sprite_frames = SubResource("SpriteFrames_2p1sr")
+animation = &"up"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.199999, -0.2)
+shape = SubResource("CapsuleShape2D_qwfl6")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0.199999, -0.2)
+shape = SubResource("CapsuleShape2D_qwfl6")
+
+[node name="lumiere_player" type="PointLight2D" parent="."]
+position = Vector2(3.8147e-06, 0)
+scale = Vector2(0.823438, 0.625781)
+color = Color(0.929412, 0.94902, 1, 1)
+energy = 1.25
+shadow_enabled = true
+texture = SubResource("GradientTexture2D_2lj7h")
+texture_scale = 1.5
+height = 10.0
+metadata/_edit_group_ = true
+
+[node name="range_player" type="PointLight2D" parent="."]
+position = Vector2(3.8147e-06, -1.19209e-07)
+color = Color(1, 0, 0.0901961, 1)
+energy = 1.2
+texture = SubResource("GradientTexture2D_36yxi")
+
+[node name="autour_du_player" type="PointLight2D" parent="."]
+visible = false
+position = Vector2(0.2, 4.76837e-07)
+scale = Vector2(2, 3.2)
+texture = SubResource("GradientTexture2D_aui8d")
+
+[node name="cooldown_attack" type="Timer" parent="."]
+wait_time = 0.4
+one_shot = true
+
+[node name="cooldown_player" type="TextureProgressBar" parent="."]
+texture_filter = 1
+offset_left = -6.4
+offset_top = 9.6
+offset_right = 6.6
+offset_bottom = 12.6
+value = 100.0
+fill_mode = 1
+nine_patch_stretch = true
+texture_under = ExtResource("6_cw6vm")
+texture_progress = ExtResource("7_hudbo")
+
+[node name="coup" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_tl1ew")
+volume_db = -1.88
+bus = &"animation_music"
+
+[connection signal="hit" from="." to="." method="_on_hit"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="timeout" from="cooldown_attack" to="." method="_on_cooldown_attack_timeout"]
